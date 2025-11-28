@@ -12,6 +12,7 @@ import { connect } from "react-redux"
 
 const Navbar = props => {
   const [ui, setui] = useState(false)
+  const [gerencial, setGerencial] = useState(false)
   const [email, setemail] = useState(false)
   const [form, setform] = useState(false)
   const [table, settable] = useState(false)
@@ -38,7 +39,20 @@ const Navbar = props => {
     if (matchingMenuItem) {
       activateParentDropdown(matchingMenuItem);
     }
-  });
+  }, [props.router.location.pathname]);
+
+  const closeDropdowns = () => {
+    setAdmin(false)
+    setGerencial(false)
+    setemail(false)
+    setform(false)
+    settable(false)
+    setchart(false)
+    seticon(false)
+    setmap(false)
+    setextra(false)
+    setMoreItem(false)
+  }
 
   const removeActivation = (items) => {
     for (var i = 0; i < items.length; ++i) {
@@ -111,7 +125,10 @@ const Navbar = props => {
 
                 <li
                   className="nav-item dropdown"
-                  onMouseEnter={() => setAdmin(true)}
+                  onMouseEnter={() => {
+                    closeDropdowns()
+                    setAdmin(true)
+                  }}
                   onMouseLeave={() => setAdmin(false)}
                 >
                   <Link
@@ -152,7 +169,8 @@ const Navbar = props => {
                     to="/#"
                     onClick={e => {
                       e.preventDefault()
-                      setemail(!email)
+                      closeDropdowns()
+                      setGerencial(prev => !prev)
                     }}
                     className="nav-link dropdown-toggle arrow-none"
                   >
@@ -160,7 +178,7 @@ const Navbar = props => {
                   </Link>
                   <div
                     className={classname("dropdown-menu dropdown-menu-left",
-                      { show: email }
+                      { show: gerencial }
                     )}
                   >
                     <Link to="/admin/activities" className="dropdown-item">
@@ -180,7 +198,8 @@ const Navbar = props => {
                     to="/#"
                     onClick={e => {
                       e.preventDefault()
-                      setemail(!email)
+                      closeDropdowns()
+                      setemail(prev => !prev)
                     }}
                     className="nav-link dropdown-toggle arrow-none"
                   >
@@ -208,7 +227,8 @@ const Navbar = props => {
                     to="/#"
                     onClick={e => {
                       e.preventDefault()
-                      setui(!ui)
+                      closeDropdowns()
+                      setui(prev => !prev)
                     }}
                     className="nav-link dropdown-toggle arrow-none"
                   >
@@ -304,7 +324,8 @@ const Navbar = props => {
                     className="nav-link dropdown-toggle arrow-none"
                     onClick={e => {
                       e.preventDefault()
-                      setform(!form)
+                      closeDropdowns()
+                      setform(prev => !prev)
                     }}
                   >
                     <i className="ti-receipt"></i> {props.t("Forms")}
@@ -336,7 +357,8 @@ const Navbar = props => {
                     className="nav-link dropdown-toggle arrow-none"
                     onClick={e => {
                       e.preventDefault()
-                      setMoreItem(!moreItem)
+                      closeDropdowns()
+                      setMoreItem(prev => !prev)
                     }}
                   >
                     <i className="ti-menu-alt"></i>More
@@ -346,14 +368,15 @@ const Navbar = props => {
                     <Link to="/chat" className="dropdown-item">{props.t("Chat")}</Link>
                     <Link to="/kanbanboard" className="dropdown-item">{props.t("Kanban")}</Link>
                     <div className="dropdown">
-                      <Link
-                        to="/#"
-                        className="dropdown-item dropdown-toggle arrow-none"
-                        onClick={e => {
-                          e.preventDefault()
-                          seticon(!icon)
-                        }}
-                      >
+                        <Link
+                          to="/#"
+                          className="dropdown-item dropdown-toggle arrow-none"
+                          onClick={e => {
+                            e.preventDefault()
+                            closeDropdowns()
+                            seticon(prev => !prev)
+                          }}
+                        >
                         {props.t("Icons")} <div className="arrow-down"></div>
                       </Link>
                       <div
@@ -377,14 +400,15 @@ const Navbar = props => {
                       </div>
                     </div>
                     <div className="dropdown">
-                      <Link
-                        to="/#"
-                        className="dropdown-item dropdown-toggle arrow-none"
-                        onClick={e => {
-                          e.preventDefault()
-                          settable(!table)
-                        }}
-                      >
+                        <Link
+                          to="/#"
+                          className="dropdown-item dropdown-toggle arrow-none"
+                          onClick={e => {
+                            e.preventDefault()
+                            closeDropdowns()
+                            settable(prev => !prev)
+                          }}
+                        >
                         {props.t("Tables")} <div className="arrow-down"></div>
                       </Link>
                       <div
@@ -402,14 +426,15 @@ const Navbar = props => {
                       </div>
                     </div>
                     <div className="dropdown">
-                      <Link
-                        to="/#"
-                        className="dropdown-item dropdown-toggle arrow-none"
-                        onClick={e => {
-                          e.preventDefault()
-                          setmap(!map)
-                        }}
-                      >
+                        <Link
+                          to="/#"
+                          className="dropdown-item dropdown-toggle arrow-none"
+                          onClick={e => {
+                            e.preventDefault()
+                            closeDropdowns()
+                            setmap(prev => !prev)
+                          }}
+                        >
                         {props.t("Maps")} <div className="arrow-down"></div>
                       </Link>
                       <div
@@ -434,7 +459,8 @@ const Navbar = props => {
                     className="nav-link dropdown-toggle arrow-none"
                     onClick={e => {
                       e.preventDefault()
-                      setchart(!chart)
+                      closeDropdowns()
+                      setchart(prev => !prev)
                     }}
                   >
                     <i className="ti-pie-chart"></i> {props.t("Charts")}
@@ -467,7 +493,8 @@ const Navbar = props => {
                   <Link className="nav-link dropdown-toggle arrow-none" to="#" id="topnav-pages"
                     onClick={e => {
                       e.preventDefault()
-                      setextra(!extra)
+                      closeDropdowns()
+                      setextra(prev => !prev)
                     }}
                   >
                     <i className="ti-support"></i>Pages
