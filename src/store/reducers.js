@@ -28,6 +28,10 @@ import activities from "./activities/reducer";
 import levels from "./levels/reducer";
 import objectives from "./objectives/reducer";
 import topics from "./topics/reducer";
+import activitiesSchedule from "./activities_schedule/reducer";
+import activitiesSessions from "./activities_sessions/reducer";
+import activitiesEnrollments from "./activities_enrollments/reducer";
+import activitiesAttendance from "./activities_attendance/reducer";
 
 const rootReducer = combineReducers({
   // public
@@ -51,6 +55,10 @@ const rootReducer = combineReducers({
   levels,
   objectives,
   topics,
+  activitiesSchedule,
+  activitiesSessions,
+  activitiesEnrollments,
+  activitiesAttendance,
 })
 
 export default rootReducer

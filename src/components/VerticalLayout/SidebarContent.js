@@ -188,6 +188,27 @@ const SidebarContent = props => {
 
             <li>
               <Link to="/#" className="has-arrow waves-effect">
+                <i className="mdi mdi-cash"></i>
+                <span>Financeiro</span>
+              </Link>
+              <ul className="sub-menu">
+                <li>
+                  <Link to="/financial/cash-register">Caixa</Link>
+                </li>
+                <li>
+                  <Link to="/financial/cash-flow">Fluxo de Caixa</Link>
+                </li>
+                <li>
+                  <Link to="/financial/accounts-payable">Contas a Pagar</Link>
+                </li>
+                <li>
+                  <Link to="/financial/fees">Taxas</Link>
+                </li>
+              </ul>
+            </li>
+
+            <li>
+              <Link to="/#" className="has-arrow waves-effect">
                 <i className="mdi mdi-email-outline"></i>
                 <span>{props.t("Email")}</span>
               </Link>

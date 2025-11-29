@@ -1,4 +1,4 @@
-import { all, call, put, takeEvery } from "redux-saga/effects";
+import { call, put, takeLatest, all } from "redux-saga/effects";
 import {
   FETCH_ACTIVITIES,
   CREATE_ACTIVITY,
@@ -7,61 +7,62 @@ import {
 } from "./actionTypes";
 import {
   fetchActivitiesSuccess,
-  fetchActivitiesError,
+  fetchActivitiesFail,
   createActivitySuccess,
-  createActivityError,
+  createActivityFail,
   updateActivitySuccess,
-  updateActivityError,
+  updateActivityFail,
   deleteActivitySuccess,
-  deleteActivityError,
+  deleteActivityFail,
 } from "./actions";
 import { getActivitiesHelper } from "../../helpers/activities_helper";
 
-function* fetchActivitiesSaga() {
+function* fetchActivities() {
   try {
     const helper = getActivitiesHelper();
     const items = yield call([helper, helper.listActivities]);
     yield put(fetchActivitiesSuccess(items));
   } catch (error) {
-    yield put(fetchActivitiesError(error.message || "Erro ao buscar atividades"));
+    yield put(fetchActivitiesFail(error.message || "Erro ao listar atividades"));
   }
 }
 
-function* createActivitySaga({ payload }) {
+function* createActivity({ payload }) {
   try {
     const helper = getActivitiesHelper();
     const created = yield call([helper, helper.createActivity], payload);
     yield put(createActivitySuccess(created));
   } catch (error) {
-    yield put(createActivityError(error.message || "Erro ao criar atividade"));
+    yield put(createActivityFail(error.message || "Erro ao criar atividade"));
   }
 }
 
-function* updateActivitySaga({ payload }) {
+function* updateActivity({ payload }) {
   try {
+    const { id, updates } = payload;
     const helper = getActivitiesHelper();
-    const updated = yield call([helper, helper.updateActivity], payload.id, payload.updates);
+    const updated = yield call([helper, helper.updateActivity], id, updates);
     yield put(updateActivitySuccess(updated));
   } catch (error) {
-    yield put(updateActivityError(error.message || "Erro ao atualizar atividade"));
+    yield put(updateActivityFail(error.message || "Erro ao atualizar atividade"));
   }
 }
 
-function* deleteActivitySaga({ payload }) {
+function* deleteActivity({ payload }) {
   try {
     const helper = getActivitiesHelper();
     yield call([helper, helper.deleteActivity], payload);
     yield put(deleteActivitySuccess(payload));
   } catch (error) {
-    yield put(deleteActivityError(error.message || "Erro ao excluir atividade"));
+    yield put(deleteActivityFail(error.message || "Erro ao excluir atividade"));
   }
 }
 
 export default function* activitiesSaga() {
   yield all([
-    takeEvery(FETCH_ACTIVITIES, fetchActivitiesSaga),
-    takeEvery(CREATE_ACTIVITY, createActivitySaga),
-    takeEvery(UPDATE_ACTIVITY, updateActivitySaga),
-    takeEvery(DELETE_ACTIVITY, deleteActivitySaga),
+    takeLatest(FETCH_ACTIVITIES, fetchActivities),
+    takeLatest(CREATE_ACTIVITY, createActivity),
+    takeLatest(UPDATE_ACTIVITY, updateActivity),
+    takeLatest(DELETE_ACTIVITY, deleteActivity),
   ]);
 }

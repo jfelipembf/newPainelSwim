@@ -1,16 +1,16 @@
 import {
   FETCH_ACTIVITIES,
   FETCH_ACTIVITIES_SUCCESS,
-  FETCH_ACTIVITIES_ERROR,
+  FETCH_ACTIVITIES_FAIL,
   CREATE_ACTIVITY,
   CREATE_ACTIVITY_SUCCESS,
-  CREATE_ACTIVITY_ERROR,
+  CREATE_ACTIVITY_FAIL,
   UPDATE_ACTIVITY,
   UPDATE_ACTIVITY_SUCCESS,
-  UPDATE_ACTIVITY_ERROR,
+  UPDATE_ACTIVITY_FAIL,
   DELETE_ACTIVITY,
   DELETE_ACTIVITY_SUCCESS,
-  DELETE_ACTIVITY_ERROR,
+  DELETE_ACTIVITY_FAIL,
 } from "./actionTypes";
 
 const initialState = {
@@ -18,59 +18,46 @@ const initialState = {
   loading: false,
   error: null,
   creating: false,
-  createError: null,
-  created: null,
   updating: false,
-  updateError: null,
-  updated: null,
   deleting: false,
-  deleteError: null,
+  created: null,
+  updated: null,
   deletedId: null,
 };
 
-const activities = (state = initialState, action) => {
+const Activities = (state = initialState, action) => {
   switch (action.type) {
     case FETCH_ACTIVITIES:
       return { ...state, loading: true, error: null };
     case FETCH_ACTIVITIES_SUCCESS:
-      return { ...state, loading: false, items: action.payload, error: null };
-    case FETCH_ACTIVITIES_ERROR:
+      return { ...state, loading: false, items: action.payload || [] };
+    case FETCH_ACTIVITIES_FAIL:
       return { ...state, loading: false, error: action.payload };
 
     case CREATE_ACTIVITY:
-      return { ...state, creating: true, createError: null, created: null };
+      return { ...state, creating: true, error: null, created: null };
     case CREATE_ACTIVITY_SUCCESS:
-      return { ...state, creating: false, created: action.payload, items: [action.payload, ...state.items] };
-    case CREATE_ACTIVITY_ERROR:
-      return { ...state, creating: false, createError: action.payload };
+      return { ...state, creating: false, created: action.payload };
+    case CREATE_ACTIVITY_FAIL:
+      return { ...state, creating: false, error: action.payload };
 
     case UPDATE_ACTIVITY:
-      return { ...state, updating: true, updateError: null, updated: null };
+      return { ...state, updating: true, error: null, updated: null };
     case UPDATE_ACTIVITY_SUCCESS:
-      return {
-        ...state,
-        updating: false,
-        updated: action.payload,
-        items: state.items.map((item) => (item.id === action.payload.id ? action.payload : item)),
-      };
-    case UPDATE_ACTIVITY_ERROR:
-      return { ...state, updating: false, updateError: action.payload };
+      return { ...state, updating: false, updated: action.payload };
+    case UPDATE_ACTIVITY_FAIL:
+      return { ...state, updating: false, error: action.payload };
 
     case DELETE_ACTIVITY:
-      return { ...state, deleting: true, deleteError: null, deletedId: null };
+      return { ...state, deleting: true, error: null, deletedId: null };
     case DELETE_ACTIVITY_SUCCESS:
-      return {
-        ...state,
-        deleting: false,
-        deletedId: action.payload,
-        items: state.items.filter((item) => item.id !== action.payload),
-      };
-    case DELETE_ACTIVITY_ERROR:
-      return { ...state, deleting: false, deleteError: action.payload };
+      return { ...state, deleting: false, deletedId: action.payload };
+    case DELETE_ACTIVITY_FAIL:
+      return { ...state, deleting: false, error: action.payload };
 
     default:
       return state;
   }
 };
 
-export default activities;
+export default Activities;

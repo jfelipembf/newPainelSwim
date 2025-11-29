@@ -1,14 +1,14 @@
 import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
+import "firebase/compat/auth";
+
+import { AUDIT_ACTIONS, AUDIT_RESOURCES } from "../constants/audit";
 import { getAuditHelper } from "./audit_helper";
 import { getStorageHelper } from "./storage_helper";
-import { AUDIT_ACTIONS, AUDIT_RESOURCES } from "../constants/audit";
 
 class ActivitiesHelper {
   constructor() {
-    if (!firebase.apps.length) {
-      throw new Error("Firebase app not initialized");
-    }
+    if (!firebase.apps.length) throw new Error("Firebase app not initialized");
     this.db = firebase.firestore();
     this.auth = firebase.auth();
     this.storageHelper = getStorageHelper?.();
@@ -17,7 +17,6 @@ class ActivitiesHelper {
   logAudit(action, resourceId, details = {}) {
     const auditHelper = getAuditHelper?.();
     if (!auditHelper) return;
-
     const actor = this.auth.currentUser;
     const actorEmail = actor?.email || "";
     const actorName = actor?.displayName || actorEmail || "unknown";
@@ -57,9 +56,16 @@ class ActivitiesHelper {
   async listActivities() {
     const snapshot = await this.db.collection("activities").get();
     return snapshot.docs.map((doc) => {
-      const data = doc.data();
+      const data = doc.data() || {};
       return { id: doc.id, idActivity: data.idActivity || doc.id, ...data };
     });
+  }
+
+  async getActivity(id) {
+    const doc = await this.db.collection("activities").doc(id).get();
+    if (!doc.exists) return null;
+    const data = doc.data() || {};
+    return { id: doc.id, idActivity: data.idActivity || doc.id, ...data };
   }
 
   async updateActivity(id, updates) {
@@ -69,32 +75,20 @@ class ActivitiesHelper {
       updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
     };
     await this.db.collection("activities").doc(id).update(payload);
-    await this.logAudit(AUDIT_ACTIONS.UPDATE_ACTIVITY, id, { updates });
+    await this.logAudit(AUDIT_ACTIONS.UPDATE_ACTIVITY, id, { updates: payload });
     return this.getActivity(id);
   }
 
   async deleteActivity(id) {
-    if (!id) {
-      throw new Error("Activity id is required for deletion");
-    }
+    if (!id) throw new Error("Activity id is required for deletion");
     await this.db.collection("activities").doc(id).delete();
     await this.logAudit(AUDIT_ACTIONS.DELETE_ACTIVITY, id);
     return true;
   }
-
-  async getActivity(id) {
-    const doc = await this.db.collection("activities").doc(id).get();
-    if (!doc.exists) return null;
-    const data = doc.data();
-    return { id: doc.id, idActivity: data.idActivity || doc.id, ...data };
-  }
 }
 
 let _activitiesHelper = null;
-
 export const getActivitiesHelper = () => {
-  if (!_activitiesHelper) {
-    _activitiesHelper = new ActivitiesHelper();
-  }
+  if (!_activitiesHelper) _activitiesHelper = new ActivitiesHelper();
   return _activitiesHelper;
 };

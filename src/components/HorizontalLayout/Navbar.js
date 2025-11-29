@@ -14,6 +14,7 @@ const Navbar = props => {
   const [ui, setui] = useState(false)
   const [gerencial, setGerencial] = useState(false)
   const [email, setemail] = useState(false)
+  const [financial, setFinancial] = useState(false)
   const [form, setform] = useState(false)
   const [table, settable] = useState(false)
   const [chart, setchart] = useState(false)
@@ -45,6 +46,7 @@ const Navbar = props => {
     setAdmin(false)
     setGerencial(false)
     setemail(false)
+    setFinancial(false)
     setform(false)
     settable(false)
     setchart(false)
@@ -123,6 +125,12 @@ const Navbar = props => {
                   </Link>
                 </li>
 
+                <li className="nav-item">
+                  <Link className="nav-link" to="/management/schedule">
+                    <i className="fas fa-calendar-check"></i> Grade
+                  </Link>
+                </li>
+
                 <li
                   className="nav-item dropdown"
                   onMouseEnter={() => {
@@ -161,6 +169,9 @@ const Navbar = props => {
                     <Link to="/admin/services" className="dropdown-item">
                       <i className="fas fa-concierge-bell"></i> Serviços
                     </Link>
+                    <Link to="/management/classes" className="dropdown-item">
+                      <i className="fas fa-people-carry"></i> Turmas
+                    </Link>
                   </div>
                 </li>
 
@@ -183,6 +194,38 @@ const Navbar = props => {
                   >
                     <Link to="/admin/activities" className="dropdown-item">
                       <i className="fas fa-running"></i> Atividades
+                    </Link>
+                  </div>
+                </li>
+
+                <li className="nav-item dropdown">
+                  <Link
+                    to="/#"
+                    onClick={e => {
+                      e.preventDefault()
+                      closeDropdowns()
+                      setFinancial(prev => !prev)
+                    }}
+                    className="nav-link dropdown-toggle arrow-none"
+                  >
+                    <i className="fas fa-cash-register"></i> Financeiro
+                  </Link>
+                  <div
+                    className={classname("dropdown-menu dropdown-menu-left",
+                      { show: financial }
+                    )}
+                  >
+                    <Link to="/financial/cash-register" className="dropdown-item">
+                      <i className="fas fa-store"></i> Caixa
+                    </Link>
+                    <Link to="/financial/cash-flow" className="dropdown-item">
+                      <i className="fas fa-stream"></i> Fluxo de Caixa
+                    </Link>
+                    <Link to="/financial/accounts-payable" className="dropdown-item">
+                      <i className="fas fa-file-invoice-dollar"></i> Contas a Pagar
+                    </Link>
+                    <Link to="/financial/fees" className="dropdown-item">
+                      <i className="fas fa-percentage"></i> Taxas
                     </Link>
                   </div>
                 </li>

@@ -5,4 +5,4 @@ export * from './membership';
 export * from './members';
 export * from './products';
 export * from './services';
-export * from './activities';
+export * from './activities/activities';

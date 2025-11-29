@@ -19,6 +19,10 @@ import activitiesSaga from "./activities/saga";
 import levelsSaga from "./levels/saga";
 import objectivesSaga from "./objectives/saga";
 import topicsSaga from "./topics/saga";
+import activitiesScheduleSaga from "./activities_schedule/saga";
+import activitiesSessionsSaga from "./activities_sessions/saga";
+import activitiesEnrollmentsSaga from "./activities_enrollments/saga";
+import activitiesAttendanceSaga from "./activities_attendance/saga";
 
 
 export default function* rootSaga() {
@@ -42,5 +46,9 @@ export default function* rootSaga() {
     fork(levelsSaga),
     fork(objectivesSaga),
     fork(topicsSaga),
+    fork(activitiesScheduleSaga),
+    fork(activitiesSessionsSaga),
+    fork(activitiesEnrollmentsSaga),
+    fork(activitiesAttendanceSaga),
   ])
 }

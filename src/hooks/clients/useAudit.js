@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { getAuditHelper } from '../../helpers/audit_helper';
+import { useState, useEffect, useCallback, useMemo } from "react";
+import { getAuditHelper } from "../../helpers/audit_helper";
 
 /**
  * Hook for managing audit logs
@@ -12,9 +12,9 @@ export const useAuditLogs = (initialFilters = {}) => {
   const [error, setError] = useState(null);
   const [filters, setFilters] = useState(initialFilters);
 
-  const auditHelper = getAuditHelper();
+  const auditHelper = useMemo(() => getAuditHelper(), []);
 
-  const fetchLogs = async () => {
+  const fetchLogs = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
@@ -41,7 +41,7 @@ export const useAuditLogs = (initialFilters = {}) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [auditHelper, filters]);
 
   const logActivity = async (activityData) => {
     try {
@@ -56,7 +56,7 @@ export const useAuditLogs = (initialFilters = {}) => {
 
   useEffect(() => {
     fetchLogs();
-  }, [filters]);
+  }, [fetchLogs]);
 
   return {
     logs,
