@@ -17,7 +17,9 @@ const MembersList = () => {
   }, [dispatch]);
 
   const handleNewMember = () => navigate("/admin/create-member");
-  const handleView = (id) => navigate(`/admin/create-member?memberId=${id}`);
+  const handleView = (member) => {
+    navigate(`/members/${member.id}`, { state: { member } });
+  };
 
   const renderStatus = (membershipStatus) => {
     if (!membershipStatus) return <Badge color="secondary">Sem contrato</Badge>;
@@ -101,7 +103,7 @@ const MembersList = () => {
                             <td>{renderStatus(member.membershipStatus)}</td>
                             <td>{member.email || "—"}</td>
                             <td className="text-end">
-                              <Button size="sm" color="info" onClick={() => handleView(member.id)}>
+                              <Button size="sm" color="info" onClick={() => handleView(member)}>
                                 Ver
                               </Button>
                             </td>

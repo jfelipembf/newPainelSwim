@@ -29,16 +29,22 @@ import Dashboard from "../pages/Dashboard/index"
 import EmployeesList from "../pages/Admin/employees/EmployeesList"
 import CreateEmployee from "../pages/Admin/employees/CreateEmployee"
 import MembersList from "../pages/members/MembersList"
+import MemberProfile from "../pages/members/memberProfile/memberProfile"
 import MembershipsList from "../pages/Admin/memberships/MembershipsList"
 import CreateMembership from "../pages/Admin/memberships/CreateMembership.js"
 import AreasPage from "../pages/Admin/areas/AreasPage.js"
 import ProductsPage from "../pages/Admin/products/ProductsPage.js"
 import ServicesPage from "../pages/Admin/services/ServicesPage.js"
 import ActivitiesPage from "../pages/Management/Activities/ActivitiesPage.js"
+import ClassesPage from "../pages/Management/Classes/ClassesPage.js"
+import SchedulePage from "../pages/Management/Schedule/SchedulePage.js"
 import EvaluationPage from "../pages/Evaluation/EvaluationPage.js"
+import CashRegisterPage from "../pages/Financial/CashRegister/CashRegisterPage"
+import CashFlowPage from "../pages/Financial/CashFlow/CashFlowPage"
+import AccountsPayablePage from "../pages/Financial/AccountsPayable/AccountsPayablePage"
+import FeesPage from "../pages/Financial/Fees/FeesPage"
 
 // General Pages
-import ManagementPage from "../pages/Management/ManagementPage.js"
 
 //Charts
 import ChartsAppex from "../pages/Charts/charts-appex";
@@ -110,6 +116,8 @@ const userRoutes = [
   { path: "/admin/employees", component: <EmployeesList /> },
   { path: "/admin/create-employee", component: <CreateEmployee /> },
   { path: "/admin/members", component: <MembersList /> },
+  { path: "/members/:id", component: <MemberProfile /> },
+  { path: "/management/schedule", component: <SchedulePage /> },
   { path: "/admin/memberships", component: <MembershipsList /> },
   { path: "/admin/create-membership", component: <CreateMembership /> },
   { path: "/admin/areas", component: <AreasPage /> },
@@ -118,9 +126,12 @@ const userRoutes = [
   { path: "/admin/activities", component: <ActivitiesPage /> },
   { path: "/evaluation", component: <EvaluationPage /> },
 
-  // Management
-  { path: "/management", component: <ManagementPage /> },
   { path: "/management/activities", component: <ActivitiesPage /> },
+  { path: "/management/classes", component: <ClassesPage /> },
+  { path: "/financial/cash-register", component: <CashRegisterPage /> },
+  { path: "/financial/cash-flow", component: <CashFlowPage /> },
+  { path: "/financial/accounts-payable", component: <AccountsPayablePage /> },
+  { path: "/financial/fees", component: <FeesPage /> },
 
   // //calendar
   { path: "/calendar", component: <Calendar /> },
